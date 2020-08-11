@@ -1,26 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React , {useState} from 'react';
 
-function App() {
+const App = () => {
+
+  const [temperatureValue, setTemperatureValue] = useState(10);
+  const [temperatureValueFarenheit, setTemperatureValueFarenheit] = useState(50);
+  const [temperatureColor, setTemperatureColor] = useState("cold");
+
+  const increaseTemperature = () => {
+    if (temperatureValue === 35) return;
+
+    const newTemperature = temperatureValue + 1;
+
+    setTemperatureValueFarenheit((Math.trunc(newTemperature * 9/5) + 32))
+    setTemperatureValue(newTemperature);
+
+    if (newTemperature >= 13 && newTemperature < 25) {
+      setTemperatureColor("warm");
+      return
+    }
+    if (newTemperature >= 25) {
+      setTemperatureColor("hot");
+    }
+  };
+
+  const decreaseTemperature = () => {
+    if (temperatureValue === 0) return;
+
+    const newTemperature = temperatureValue - 1;
+    setTemperatureValueFarenheit((Math.trunc(newTemperature * 9/5) + 32))
+    setTemperatureValue(newTemperature);
+    if (newTemperature >= 15 && newTemperature < 25) {
+      setTemperatureColor("warm");
+      return
+    }
+    if (newTemperature < 13) {
+      setTemperatureColor("cold");
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="temperature-display-container">
+        <div className={`temperature-display ${temperatureColor}`}>
+          {temperatureValue}°C
+        </div>
+        <div className={`temperature-display ${temperatureColor}`}>
+          {temperatureValueFarenheit}°F
+        </div>
+      </div>
+      <div className="button-container">
+        <button onClick={increaseTemperature}>+</button>
+        <button onClick={decreaseTemperature}>-</button>
+      </div>
     </div>
-  );
+  )
 }
 
 export default App;
